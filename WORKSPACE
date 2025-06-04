@@ -32,9 +32,10 @@ http_archive(
 )
 
 load("@io_bazel_rules_scala//:scala_config.bzl", "scala_config")
-scala_config(scala_version=scala_V)
 
-load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories", "rules_scala_setup", "rules_scala_toolchain_deps_repositories")
+scala_config(scala_version = scala_V)
+
+load("@io_bazel_rules_scala//scala:scala.bzl", "rules_scala_setup", "rules_scala_toolchain_deps_repositories", "scala_repositories")
 
 scala_repositories(
     fetch_sources = True,
@@ -57,10 +58,9 @@ scala_repositories(
 load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
 
 scala_register_toolchains()
+
 load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
 
 rules_proto_dependencies()
 
 rules_proto_toolchains()
-
-

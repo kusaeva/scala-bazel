@@ -5,8 +5,9 @@ load(
 
 scala_binary(
     name = "app",
-    srcs = glob(["**/*.scala"]),
-    main_class = "example.ExampleApp",
-    deps = [
-    ],
+    srcs = glob([
+        "**/*.scala",
+    ]),
+    main_class = "main.Main",
+    scalacopts = ["-Xsource:3"],
 )

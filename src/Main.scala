@@ -1,6 +1,7 @@
-package example
+package main
 
-object ExampleApp extends App {
+import example.*
 
-  println("Hello world")
+object Main extends App {
+    println(Example.text)
 }

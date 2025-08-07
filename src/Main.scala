@@ -1,7 +1,10 @@
 package main
 
-import example.*
+import example.Example
 
-object Main extends App {
-    println(Example.text)
+import java.io.IOException
+import zio.{Console, IO, ZIOAppDefault}
+
+object Main extends ZIOAppDefault {
+  def run: IO[IOException, Unit] = Console.printLine(Example.text)
 }

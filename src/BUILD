@@ -1,5 +1,6 @@
+load("@rules_jvm_external//:defs.bzl", "artifact")
 load(
-    "@io_bazel_rules_scala//scala:scala.bzl",
+    "@rules_scala//scala:scala.bzl",
     "scala_binary",
 )
 
@@ -9,5 +10,9 @@ scala_binary(
         "**/*.scala",
     ]),
     main_class = "main.Main",
-    scalacopts = ["-Xsource:3"],
+    deps = [
+        "@maven//:dev_zio_izumi_reflect_2_13",
+        "@maven//:dev_zio_zio_2_13",
+        "@maven//:dev_zio_zio_stacktracer_2_13",
+    ],
 )

@@ -1,0 +1,32 @@
+module(
+    name = "scala-bazel",
+    version = "",
+)
+
+bazel_dep(name = "rules_scala", version = "7.0.0")
+bazel_dep(name = "rules_java", version = "8.12.0")
+bazel_dep(name = "rules_jvm_external", version = "6.8")
+
+scala_config = use_extension(
+    "@rules_scala//scala/extensions:config.bzl",
+    "scala_config",
+)
+scala_config.settings(scala_version = "2.13.16")
+
+scala_deps = use_extension(
+    "@rules_scala//scala/extensions:deps.bzl",
+    "scala_deps",
+)
+scala_deps.scala()
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    artifacts = [
+        "dev.zio:zio_2.13:2.1.14",
+    ],
+    fetch_sources = True,
+    repositories = [
+        "https://repo1.maven.org/maven2",
+    ],
+)
+use_repo(maven, "maven")

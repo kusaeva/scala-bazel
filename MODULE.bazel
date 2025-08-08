@@ -11,9 +11,7 @@ scala_config = use_extension(
     "@rules_scala//scala/extensions:config.bzl",
     "scala_config",
 )
-
 scala_config.settings(scala_version = "2.13.16")
-
 use_repo(scala_config, "rules_scala_config")
 
 scala_deps = use_extension(

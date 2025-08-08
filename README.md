@@ -1,4 +1,5 @@
-`bazel run //src:app` works without an error but in IDEA I see red import even with Additional compiler options -Xsource:3
-<img width="1624" alt="Screenshot 2025-06-04 at 11 24 02" src="https://github.com/user-attachments/assets/2c1abc9b-019e-46e0-9afd-45a6f5b60a38" />
+Sources are not auto attached and with default scala 3 IDEA suggests 2.13 libs  
 
-<img width="1094" alt="Screenshot 2025-06-04 at 11 21 49" src="https://github.com/user-attachments/assets/13cf20d0-b06c-432f-b07d-7c5d26c19e6b" />
+
+https://github.com/user-attachments/assets/010c4c7b-4b6b-40f7-ad11-9e1412eab55d
+

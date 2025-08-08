@@ -1,2 +1,2 @@
 build --incompatible_strict_action_env=true
-common --incompatible_unambiguous_label_stringification=false
+common --incompatible_unambiguous_label_stringification=false --incompatible_enable_proto_toolchain_resolution

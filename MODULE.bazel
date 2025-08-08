@@ -11,20 +11,66 @@ scala_config = use_extension(
     "@rules_scala//scala/extensions:config.bzl",
     "scala_config",
 )
-scala_config.settings(scala_version = "2.13.16")
+scala_config.settings(
+    scala_version = "3.3.6",
+    scala_versions = [
+        "2.13.16",
+        "3.3.6",
+    ],
+)
+use_repo(scala_config, "rules_scala_config")
 
 scala_deps = use_extension(
     "@rules_scala//scala/extensions:deps.bzl",
     "scala_deps",
 )
 scala_deps.scala()
+scala_deps.settings(
+    fetch_sources = True,
+)
+
+scala_protoc = use_extension(
+    "@rules_scala//scala/extensions:protoc.bzl",
+    "scala_protoc",
+    dev_dependency = True,
+)
+use_repo(scala_protoc, "rules_scala_protoc_toolchains")
+
+# Register this toolchain before any others in the file. Still safe even when
+# `--incompatible_enable_proto_toolchain_resolution` is `False`.
+register_toolchains(
+    "@rules_scala_protoc_toolchains//...:all",
+    dev_dependency = True,
+)
+
+# Temporarily required for protocol compiler toolchainization until resolution
+# of protocolbuffers/protobuf#19679. Assumes having copied
+# `protoc/0001-protobuf-19679-rm-protoc-dep.patch` from `rules_scala` to
+# `protobuf.patch` in the root package. See the "Using a precompiled protocol
+# compiler" section below.
+bazel_dep(
+    name = "protobuf",
+    version = "30.2",
+    repo_name = "com_google_protobuf",
+)
+single_version_override(
+    module_name = "protobuf",
+    patch_strip = 1,
+    patches = ["//:protobuf.patch"],
+    version = "30.2",
+)
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     artifacts = [
         "dev.zio:zio_2.13:2.1.14",
+        "dev.zio:zio_3:2.1.14",
     ],
     fetch_sources = True,
+    known_contributing_modules = [
+        "protobuf",
+        "scala-bazel",
+    ],
     lock_file = "//:maven_install.json",
     repositories = [
         "https://repo1.maven.org/maven2",

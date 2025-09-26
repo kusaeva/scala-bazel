@@ -1,10 +1,27 @@
-package main
+package com.example
 
-import example.Example
+import io.grpc._
+import com.example.protos._
+import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.duration._
 
-import java.io.IOException
-import zio.{Console, IO, ZIOAppDefault}
+object Main extends App {
+  implicit val ec: ExecutionContext = ExecutionContext.global
 
-object Main extends ZIOAppDefault {
-  def run: IO[IOException, Unit] = Console.printLine(Example.text)
+  val channel: ManagedChannel = ManagedChannelBuilder
+    .forAddress("localhost", 50051)
+    .usePlaintext()
+    .intercept(new CustomClientInterceptor())
+    .build()
+
+  try {
+    val asyncStub = HelloServiceGrpc.stub(channel)
+    val futureResponse: Future[HelloResponse] =
+      asyncStub.sayHello(HelloRequest("World"))
+    scala.concurrent.Await.result(futureResponse, 5.seconds)
+  } catch {
+    case e: io.grpc.StatusRuntimeException => println("ok, unavailable")
+  } finally {
+    channel.shutdown()
+  }
 }

@@ -3,16 +3,32 @@ load(
     "@rules_scala//scala:scala.bzl",
     "scala_binary",
 )
+load("@rules_scala//scala_proto:scala_proto.bzl", "scala_proto_library")
 
 scala_binary(
     name = "app",
     srcs = glob([
         "**/*.scala",
     ]),
-    main_class = "main.Main",
+    main_class = "com.example.Main",
     deps = [
-        "@maven//:dev_zio_izumi_reflect_2_13",
-        "@maven//:dev_zio_zio_2_13",
-        "@maven//:dev_zio_zio_stacktracer_2_13",
+        "//src:hello_scala_proto",
+    ],
+)
+
+proto_library(
+    name = "hello_proto",
+    srcs = ["proto/hello.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_google_protobuf//:empty_proto",
+    ],
+)
+
+scala_proto_library(
+    name = "hello_scala_proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":hello_proto",
     ],
 )

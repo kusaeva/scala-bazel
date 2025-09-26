@@ -3,7 +3,7 @@ module(
     version = "",
 )
 
-bazel_dep(name = "rules_scala", version = "7.0.0")
+bazel_dep(name = "rules_scala", version = "7.1.2")
 bazel_dep(name = "rules_java", version = "8.12.0")
 bazel_dep(name = "rules_jvm_external", version = "6.8")
 
@@ -11,7 +11,10 @@ scala_config = use_extension(
     "@rules_scala//scala/extensions:config.bzl",
     "scala_config",
 )
-scala_config.settings(scala_version = "2.13.16")
+scala_config.settings(scala_version = "3.3.6")
+
+# 2.13.16 works
+#scala_config.settings(scala_version = "2.13.16")
 use_repo(scala_config, "rules_scala_config")
 
 scala_deps = use_extension(
@@ -21,6 +24,13 @@ scala_deps = use_extension(
 scala_deps.scala()
 scala_deps.settings(
     fetch_sources = True,
+)
+scala_deps.scala_proto(
+    default_gen_opts = [
+        "grpc",
+        "flat_package",
+        "scala3_sources",
+    ],
 )
 
 scala_protoc = use_extension(
@@ -37,27 +47,25 @@ register_toolchains(
     dev_dependency = True,
 )
 
-# Temporarily required for protocol compiler toolchainization until resolution
-# of protocolbuffers/protobuf#19679. Assumes having copied
-# `protoc/0001-protobuf-19679-rm-protoc-dep.patch` from `rules_scala` to
-# `protobuf.patch` in the root package. See the "Using a precompiled protocol
-# compiler" section below.
 bazel_dep(
     name = "protobuf",
-    version = "30.2",
+    version = "32.0",
     repo_name = "com_google_protobuf",
 )
 single_version_override(
     module_name = "protobuf",
     patch_strip = 1,
     patches = ["//:protobuf.patch"],
-    version = "30.2",
+    version = "32.0",
 )
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     artifacts = [
-        "dev.zio:zio_2.13:2.1.14",
+        "io.grpc:grpc-api:1.75.0",
+        "io.grpc:grpc-netty:1.75.0",
+        "io.grpc:grpc-protobuf:1.75.0",
+        "io.grpc:grpc-stub:1.75.0",
     ],
     fetch_sources = True,
     known_contributing_modules = [

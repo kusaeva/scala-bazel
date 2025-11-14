@@ -10,6 +10,9 @@ scala_binary(
         "**/*.scala",
     ]),
     main_class = "main.Main",
+    plugins = [
+        "@maven//:com_olegpy_better_monadic_for_2_13",
+    ],
     deps = [
         "@maven//:dev_zio_izumi_reflect_2_13",
         "@maven//:dev_zio_zio_2_13",

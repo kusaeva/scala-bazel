@@ -10,6 +10,7 @@ scala_binary(
         "**/*.scala",
     ]),
     main_class = "main.Main",
+    scalacopts = ["-Xsource:3"],
     deps = [
         "@maven//:dev_zio_izumi_reflect_2_13",
         "@maven//:dev_zio_zio_2_13",

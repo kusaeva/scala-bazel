@@ -1,6 +1,6 @@
 package main
 
-import example.Example
+import example.*
 
 import java.io.IOException
 import zio.{Console, IO, ZIOAppDefault}

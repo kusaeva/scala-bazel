@@ -19,6 +19,7 @@ scala_deps = use_extension(
     "scala_deps",
 )
 scala_deps.scala()
+scala_deps.scalatest()
 scala_deps.settings(
     fetch_sources = True,
 )
